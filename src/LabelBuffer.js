@@ -10,7 +10,6 @@ const RBush = require('rbush');
 const stringWidth = require('string-width');
 
 module.exports = class LabelBuffer {
-
   constructor() {
     this.tree = new RBush();
     this.margin = 5;
@@ -21,7 +20,7 @@ module.exports = class LabelBuffer {
   }
 
   project(x, y) {
-    return [Math.floor(x/2), Math.floor(y/4)];
+    return [Math.floor(x / 2), Math.floor(y / 4)];
   }
 
   writeIfPossible(text, x, y, feature, margin) {
@@ -39,7 +38,7 @@ module.exports = class LabelBuffer {
   }
 
   featuresAt(x, y) {
-    this.tree.search({minX: x, maxX: x, minY: y, maxY: y});
+    this.tree.search({ minX: x, maxX: x, minY: y, maxY: y });
   }
 
   _hasSpace(text, x, y) {
@@ -48,10 +47,10 @@ module.exports = class LabelBuffer {
 
   _calculateArea(text, x, y, margin = 0) {
     return {
-      minX: x-margin,
-      minY: y-margin/2,
-      maxX: x+margin+stringWidth(text),
-      maxY: y+margin/2,
+      minX: x - margin,
+      minY: y - margin / 2,
+      maxX: x + margin + stringWidth(text),
+      maxY: y + margin / 2,
     };
   }
 };

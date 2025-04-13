@@ -20,13 +20,16 @@ class Tile {
   }
 
   load(buffer) {
-    return this._unzipIfNeeded(buffer).then((buffer) => {
-      return this._loadTile(buffer);
-    }).then(() => {
-      return this._loadLayers();
-    }).then(() => {
-      return this;
-    });
+    return this._unzipIfNeeded(buffer)
+      .then(buffer => {
+        return this._loadTile(buffer);
+      })
+      .then(() => {
+        return this._loadLayers();
+      })
+      .then(() => {
+        return this;
+      });
   }
 
   _loadTile(buffer) {
@@ -64,7 +67,12 @@ class Tile {
         //continue if @styler and not @styler.getStyleFor layer, feature
 
         const feature = layer.feature(i);
-        feature.properties.$type = [undefined, 'Point', 'LineString', 'Polygon'][feature.type];
+        feature.properties.$type = [
+          undefined,
+          'Point',
+          'LineString',
+          'Polygon',
+        ][feature.type];
         let style;
         if (this.styler) {
           style = this.styler.getStyleFor(name, feature);
@@ -72,42 +80,53 @@ class Tile {
             continue;
           }
         }
-        let color = (
+        let color =
           style.paint['line-color'] ||
           style.paint['fill-color'] ||
-          style.paint['text-color']
-        );
+          style.paint['text-color'];
         // TODO: style zoom stops handling
         if (color instanceof Object) {
           color = color.stops[0][1];
         }
-        const colorCode = colorCache[color] || (colorCache[color] = x256(utils.hex2rgb(color)));
+        const colorCode =
+          colorCache[color] || (colorCache[color] = x256(utils.hex2rgb(color)));
         // TODO: monkey patching test case for tiles with a reduced extent 4096 / 8 -> 512
         // use feature.loadGeometry() again as soon as we got a 512 extent tileset
         const geometries = feature.loadGeometry(); //@_reduceGeometry feature, 8
-        const sort = feature.properties.localrank || feature.properties.scalerank;
-        const label = style.type === 'symbol' ? feature.properties['name_' + config.language] || feature.properties.name_en || feature.properties.name || feature.properties.house_num : void 0;
+        const sort =
+          feature.properties.localrank || feature.properties.scalerank;
+        const label =
+          style.type === 'symbol'
+            ? feature.properties['name_' + config.language] ||
+              feature.properties.name_en ||
+              feature.properties.name ||
+              feature.properties.house_num
+            : void 0;
         if (style.type === 'fill') {
-          nodes.push(this._addBoundaries(true, {
-            //            id: feature.id
-            layer: name,
-            style,
-            label,
-            sort,
-            points: geometries,
-            color: colorCode,
-          }));
-        } else {
-          for (const points of geometries) {
-            nodes.push(this._addBoundaries(false, {
-              //id: feature.id,
+          nodes.push(
+            this._addBoundaries(true, {
+              //            id: feature.id
               layer: name,
               style,
               label,
               sort,
-              points,
+              points: geometries,
               color: colorCode,
-            }));
+            }),
+          );
+        } else {
+          for (const points of geometries) {
+            nodes.push(
+              this._addBoundaries(false, {
+                //id: feature.id,
+                layer: name,
+                style,
+                label,
+                sort,
+                points,
+                color: colorCode,
+              }),
+            );
           }
         }
       }
@@ -118,7 +137,7 @@ class Tile {
         tree,
       };
     }
-    return this.layers = layers;
+    return (this.layers = layers);
   }
 
   _addBoundaries(deep, data) {
@@ -126,7 +145,7 @@ class Tile {
     let maxX = -2e308;
     let minY = 2e308;
     let maxY = -2e308;
-    const points = (deep ? data.points[0] : data.points);
+    const points = deep ? data.points[0] : data.points;
     for (const p of points) {
       if (p.x < minX) minX = p.x;
       if (p.x > maxX) maxX = p.x;
@@ -149,12 +168,12 @@ class Tile {
       for (const point of points) {
         const p = {
           x: Math.floor(point.x / factor),
-          y: Math.floor(point.y / factor)
+          y: Math.floor(point.y / factor),
         };
         if (last && last.x === p.x && last.y === p.y) {
           continue;
         }
-        reduced.push(last = p);
+        reduced.push((last = p));
       }
       results.push(reduced);
     }

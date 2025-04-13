@@ -63,8 +63,7 @@ const argv = require('yargs')
     default: config.styleFile,
     type: 'string',
   })
-  .strict()
-  .argv;
+  .strict().argv;
 
 const options = {
   initialLat: argv.latitude,
@@ -72,7 +71,7 @@ const options = {
   initialZoom: argv.zoom,
   size: {
     width: argv.width,
-    height: argv.height
+    height: argv.height,
   },
   useBraille: argv.braille,
   headless: argv.headless,
@@ -81,7 +80,7 @@ const options = {
 };
 
 const mapscii = new Mapscii(options);
-mapscii.init().catch((err) => {
+mapscii.init().catch(err => {
   console.error('Failed to start MapSCII.');
   console.error(err);
 });

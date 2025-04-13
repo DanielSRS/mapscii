@@ -49,5 +49,12 @@
     "eslint-plugin-jest": "^24.0.0",
     "jest": "^26.4.2",
     "typescript": "^5.8.3"
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "bracketSameLine": true,
+    "bracketSpacing": true,
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }

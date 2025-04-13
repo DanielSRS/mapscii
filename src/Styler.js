@@ -22,7 +22,13 @@ class Styler {
 
     for (const layer of style.layers) {
       if (layer.ref && this.styleById[layer.ref]) {
-        for (const ref of ['type', 'source-layer', 'minzoom', 'maxzoom', 'filter']) {
+        for (const ref of [
+          'type',
+          'source-layer',
+          'minzoom',
+          'maxzoom',
+          'filter',
+        ]) {
           if (this.styleById[layer.ref][ref] && !layer[ref]) {
             layer[ref] = this.styleById[layer.ref][ref];
           }
@@ -32,7 +38,7 @@ class Styler {
       layer.appliesTo = this._compileFilter(layer.filter);
 
       //TODO Better translation of: @styleByLayer[style['source-layer']] ?= []
-      if ((base = this.styleByLayer)[name = layer['source-layer']] == null) {
+      if ((base = this.styleByLayer)[(name = layer['source-layer'])] == null) {
         base[name] = [];
       }
       this.styleByLayer[layer['source-layer']].push(layer);
@@ -79,51 +85,56 @@ class Styler {
       case 'all':
         filter = filter.slice(1);
         filters = (() => {
-          return filter.map((sub) => this._compileFilter(sub));
+          return filter.map(sub => this._compileFilter(sub));
         }).call(this);
-        return (feature) => !!filters.find((appliesTo) => {
-          return !appliesTo(feature);
-        });
+        return feature =>
+          !!filters.find(appliesTo => {
+            return !appliesTo(feature);
+          });
       case 'any':
         filter = filter.slice(1);
         filters = (() => {
-          return filter.map((sub) => this._compileFilter(sub));
+          return filter.map(sub => this._compileFilter(sub));
         }).call(this);
-        return (feature) => !!filters.find((appliesTo) => {
-          return appliesTo(feature);
-        });
+        return feature =>
+          !!filters.find(appliesTo => {
+            return appliesTo(feature);
+          });
       case 'none':
         filter = filter.slice(1);
         filters = (() => {
-          return filter.map((sub) => this._compileFilter(sub));
+          return filter.map(sub => this._compileFilter(sub));
         }).call(this);
-        return (feature) => !filters.find((appliesTo) => {
-          return !appliesTo(feature);
-        });
+        return feature =>
+          !filters.find(appliesTo => {
+            return !appliesTo(feature);
+          });
       case '==':
-        return (feature) => feature.properties[filter[1]] === filter[2];
+        return feature => feature.properties[filter[1]] === filter[2];
       case '!=':
-        return (feature) => feature.properties[filter[1]] !== filter[2];
+        return feature => feature.properties[filter[1]] !== filter[2];
       case 'in':
-        return (feature) => !!filter.slice(2).find((value) => {
-          return feature.properties[filter[1]] === value;
-        });
+        return feature =>
+          !!filter.slice(2).find(value => {
+            return feature.properties[filter[1]] === value;
+          });
       case '!in':
-        return (feature) => !filter.slice(2).find((value) => {
-          return feature.properties[filter[1]] === value;
-        });
+        return feature =>
+          !filter.slice(2).find(value => {
+            return feature.properties[filter[1]] === value;
+          });
       case 'has':
-        return (feature) => !!feature.properties[filter[1]];
+        return feature => !!feature.properties[filter[1]];
       case '!has':
-        return (feature) => !feature.properties[filter[1]];
+        return feature => !feature.properties[filter[1]];
       case '>':
-        return (feature) => feature.properties[filter[1]] > filter[2];
+        return feature => feature.properties[filter[1]] > filter[2];
       case '>=':
-        return (feature) => feature.properties[filter[1]] >= filter[2];
+        return feature => feature.properties[filter[1]] >= filter[2];
       case '<':
-        return (feature) => feature.properties[filter[1]] < filter[2];
+        return feature => feature.properties[filter[1]] < filter[2];
       case '<=':
-        return (feature) => feature.properties[filter[1]] <= filter[2];
+        return feature => feature.properties[filter[1]] <= filter[2];
       default:
         return () => true;
     }

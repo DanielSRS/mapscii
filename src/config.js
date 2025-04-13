@@ -7,7 +7,7 @@ module.exports = {
 
   //source: __dirname+"/../mbtiles/regensburg.mbtiles",
 
-  styleFile: __dirname+'/../styles/dark.json',
+  styleFile: __dirname + '/../styles/dark.json',
 
   initialZoom: null,
   maxZoom: 18,
@@ -34,7 +34,7 @@ module.exports = {
 
   layers: {
     housenum_label: {
-      margin: 4
+      margin: 4,
     },
     poi_label: {
       cluster: true,

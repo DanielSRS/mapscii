@@ -36,7 +36,7 @@ class Mapscii {
 
     this.center = {
       lat: config.initialLat,
-      lon: config.initialLon
+      lon: config.initialLon,
     };
   }
 
@@ -48,9 +48,10 @@ class Mapscii {
     this._initTileSource();
     this._initRenderer();
     this._draw();
-    this.notify('Welcome to MapSCII! Use your cursors to navigate, a/z to zoom, q to quit.');
+    this.notify(
+      'Welcome to MapSCII! Use your cursors to navigate, a/z to zoom, q to quit.',
+    );
   }
-
 
   _initTileSource() {
     this.tileSource = new TileSource();
@@ -74,9 +75,9 @@ class Mapscii {
     });
     this.mouse.start();
 
-    this.mouse.on('click', (event) => this._onClick(event));
-    this.mouse.on('scroll', (event) => this._onMouseScroll(event));
-    this.mouse.on('move', (event) => this._onMouseMove(event));
+    this.mouse.on('click', event => this._onClick(event));
+    this.mouse.on('scroll', event => this._onMouseScroll(event));
+    this.mouse.on('move', event => this._onMouseMove(event));
   }
 
   _initRenderer() {
@@ -89,31 +90,42 @@ class Mapscii {
     });
 
     this._resizeRenderer();
-    this.zoom = (config.initialZoom !== null) ? config.initialZoom : this.minZoom;
+    this.zoom = config.initialZoom !== null ? config.initialZoom : this.minZoom;
   }
 
   _resizeRenderer() {
-    this.width = config.size && config.size.width ? config.size.width * 2 : config.output.columns >> 1 << 2;
-    this.height = config.size && config.size.height ? config.size.height * 4 : config.output.rows * 4 - 4;
+    this.width =
+      config.size && config.size.width
+        ? config.size.width * 2
+        : (config.output.columns >> 1) << 2;
+    this.height =
+      config.size && config.size.height
+        ? config.size.height * 4
+        : config.output.rows * 4 - 4;
 
-    this.minZoom = 4-Math.log(4096/this.width)/Math.LN2;
+    this.minZoom = 4 - Math.log(4096 / this.width) / Math.LN2;
 
     this.renderer.setSize(this.width, this.height);
   }
 
   _colrow2ll(x, y) {
     const projected = {
-      x: (x-0.5)*2,
-      y: (y-0.5)*4,
+      x: (x - 0.5) * 2,
+      y: (y - 0.5) * 4,
     };
 
     const size = utils.tilesizeAtZoom(this.zoom);
-    const [dx, dy] = [projected.x-this.width/2, projected.y-this.height/2];
+    const [dx, dy] = [
+      projected.x - this.width / 2,
+      projected.y - this.height / 2,
+    ];
 
     const z = utils.baseZoom(this.zoom);
     const center = utils.ll2tile(this.center.lon, this.center.lat, z);
 
-    return utils.normalize(utils.tile2ll(center.x+(dx/size), center.y+(dy/size), z));
+    return utils.normalize(
+      utils.tile2ll(center.x + dx / size, center.y + dy / size, z),
+    );
   }
 
   _updateMousePosition(event) {
@@ -121,7 +133,12 @@ class Mapscii {
   }
 
   _onClick(event) {
-    if (event.x < 0 || event.x > this.width/2 || event.y < 0 || event.y > this.height/4) {
+    if (
+      event.x < 0 ||
+      event.x > this.width / 2 ||
+      event.y < 0 ||
+      event.y > this.height / 4
+    ) {
       return;
     }
     this._updateMousePosition(event);
@@ -149,8 +166,16 @@ class Mapscii {
 
     const z = utils.baseZoom(this.zoom);
     // the projected locations
-    const targetMouseTile = utils.ll2tile(targetMouseLonLat.lon, targetMouseLonLat.lat, z);
-    const offsetMouseTile = utils.ll2tile(offsetMouseLonLat.lon, offsetMouseLonLat.lat, z);
+    const targetMouseTile = utils.ll2tile(
+      targetMouseLonLat.lon,
+      targetMouseLonLat.lat,
+      z,
+    );
+    const offsetMouseTile = utils.ll2tile(
+      offsetMouseLonLat.lon,
+      offsetMouseLonLat.lat,
+      z,
+    );
 
     // the projected center
     const centerTile = utils.ll2tile(this.center.lon, this.center.lat, z);
@@ -159,7 +184,7 @@ class Mapscii {
     const offsetCenterLonLat = utils.tile2ll(
       centerTile.x - (offsetMouseTile.x - targetMouseTile.x),
       centerTile.y - (offsetMouseTile.y - targetMouseTile.y),
-      z
+      z,
     );
     // move to the new center
     this.setCenter(offsetCenterLonLat.lat, offsetCenterLonLat.lon);
@@ -168,7 +193,12 @@ class Mapscii {
   }
 
   _onMouseMove(event) {
-    if (event.x < 0 || event.x > this.width/2 || event.y < 0 || event.y > this.height/4) {
+    if (
+      event.x < 0 ||
+      event.x > this.width / 2 ||
+      event.y < 0 ||
+      event.y > this.height / 4
+    ) {
       return;
     }
     if (config.mouseCallback && !config.mouseCallback(event)) {
@@ -178,26 +208,29 @@ class Mapscii {
     // start dragging
     if (event.button === 'left') {
       if (this.mouseDragging) {
-        const dx = (this.mouseDragging.x-event.x)*2;
-        const dy = (this.mouseDragging.y-event.y)*4;
+        const dx = (this.mouseDragging.x - event.x) * 2;
+        const dy = (this.mouseDragging.y - event.y) * 4;
 
         const size = utils.tilesizeAtZoom(this.zoom);
 
         const newCenter = utils.tile2ll(
-          this.mouseDragging.center.x+(dx/size),
-          this.mouseDragging.center.y+(dy/size),
-          utils.baseZoom(this.zoom)
+          this.mouseDragging.center.x + dx / size,
+          this.mouseDragging.center.y + dy / size,
+          utils.baseZoom(this.zoom),
         );
 
         this.setCenter(newCenter.lat, newCenter.lon);
 
         this._draw();
-
       } else {
         this.mouseDragging = {
           x: event.x,
           y: event.y,
-          center: utils.ll2tile(this.center.lon, this.center.lat, utils.baseZoom(this.zoom)),
+          center: utils.ll2tile(
+            this.center.lon,
+            this.center.lat,
+            utils.baseZoom(this.zoom),
+          ),
         };
       }
     }
@@ -229,19 +262,19 @@ class Mapscii {
         break;
       case 'left':
       case 'h':
-        this.moveBy(0, -8/Math.pow(2, this.zoom));
+        this.moveBy(0, -8 / Math.pow(2, this.zoom));
         break;
       case 'right':
       case 'l':
-        this.moveBy(0, 8/Math.pow(2, this.zoom));
+        this.moveBy(0, 8 / Math.pow(2, this.zoom));
         break;
       case 'up':
       case 'k':
-        this.moveBy(6/Math.pow(2, this.zoom), 0);
+        this.moveBy(6 / Math.pow(2, this.zoom), 0);
         break;
       case 'down':
       case 'j':
-        this.moveBy(-6/Math.pow(2, this.zoom), 0);
+        this.moveBy(-6 / Math.pow(2, this.zoom), 0);
         break;
       case 'c':
         config.useBraille = !config.useBraille;
@@ -256,22 +289,31 @@ class Mapscii {
   }
 
   _draw() {
-    this.renderer.draw(this.center, this.zoom).then((frame) => {
-      this._write(frame);
-      this.notify(this._getFooter());
-    }).catch(() => {
-      this.notify('renderer is busy');
-    });
+    this.renderer
+      .draw(this.center, this.zoom)
+      .then(frame => {
+        this._write(frame);
+        this.notify(this._getFooter());
+      })
+      .catch(() => {
+        this.notify('renderer is busy');
+      });
   }
 
   _getFooter() {
     // tile = utils.ll2tile(this.center.lon, this.center.lat, this.zoom);
     // `tile: ${utils.digits(tile.x, 3)}, ${utils.digits(tile.x, 3)}   `+
 
-    let footer = `center: ${utils.digits(this.center.lat, 3)}, ${utils.digits(this.center.lon, 3)} `;
+    let footer = `center: ${utils.digits(this.center.lat, 3)}, ${utils.digits(
+      this.center.lon,
+      3,
+    )} `;
     footer += `  zoom: ${utils.digits(this.zoom, 2)} `;
     if (this.mousePosition.lat !== undefined) {
-      footer += `  mouse: ${utils.digits(this.mousePosition.lat, 3)}, ${utils.digits(this.mousePosition.lon, 3)} `;
+      footer += `  mouse: ${utils.digits(
+        this.mousePosition.lat,
+        3,
+      )}, ${utils.digits(this.mousePosition.lon, 3)} `;
     }
     return footer;
   }
@@ -288,18 +330,18 @@ class Mapscii {
   }
 
   zoomBy(step) {
-    if (this.zoom+step < this.minZoom) {
-      return this.zoom = this.minZoom;
+    if (this.zoom + step < this.minZoom) {
+      return (this.zoom = this.minZoom);
     }
-    if (this.zoom+step > config.maxZoom) {
-      return this.zoom = config.maxZoom;
+    if (this.zoom + step > config.maxZoom) {
+      return (this.zoom = config.maxZoom);
     }
 
     this.zoom += step;
   }
 
   moveBy(lat, lon) {
-    this.setCenter(this.center.lat+lat, this.center.lon+lon);
+    this.setCenter(this.center.lat + lat, this.center.lon + lon);
   }
 
   setCenter(lat, lon) {

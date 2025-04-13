@@ -22,7 +22,9 @@ const config = require('./config');
 let MBTiles = null;
 try {
   MBTiles = require('@mapbox/mbtiles');
-} catch (err) {void 0;}
+} catch (err) {
+  void 0;
+}
 
 const modes = {
   MBTiles: 1,
@@ -33,31 +35,32 @@ const modes = {
 class TileSource {
   init(source) {
     this.source = source;
-    
+
     this.cache = {};
     this.cacheSize = 16;
     this.cached = [];
-    
+
     this.mode = null;
     this.mbtiles = null;
     this.styler = null;
-    
+
     if (this.source.startsWith('http')) {
       if (config.persistDownloadedTiles) {
         this._initPersistence();
       }
 
       this.mode = modes.HTTP;
-
     } else if (this.source.endsWith('.mbtiles')) {
       if (!MBTiles) {
-        throw new Error('MBTiles support must be installed with following command: \'npm install -g @mapbox/mbtiles\'');
+        throw new Error(
+          "MBTiles support must be installed with following command: 'npm install -g @mapbox/mbtiles'",
+        );
       }
 
       this.mode = modes.MBTiles;
       this.loadMBTiles(source);
     } else {
-      throw new Error('source type isn\'t supported yet');
+      throw new Error("source type isn't supported yet");
     }
   }
 
@@ -81,19 +84,19 @@ class TileSource {
     if (!this.mode) {
       throw new Error('no TileSource defined');
     }
-    
+
     const cached = this.cache[[z, x, y].join('-')];
     if (cached) {
       return Promise.resolve(cached);
     }
-    
+
     if (this.cached.length > this.cacheSize) {
       const overflow = Math.abs(this.cacheSize - this.cache.length);
       for (const tile in this.cached.splice(0, overflow)) {
         delete this.cache[tile];
       }
     }
-  
+
     switch (this.mode) {
       case modes.MBTiles:
         return this._getMBTile(z, x, y);
@@ -108,16 +111,16 @@ class TileSource {
     if (config.persistDownloadedTiles && persistedTile) {
       promise = Promise.resolve(persistedTile);
     } else {
-      promise = fetch(this.source + [z,x,y].join('/') + '.pbf')
-        .then((res) => res.buffer())
-        .then((buffer) => {
+      promise = fetch(this.source + [z, x, y].join('/') + '.pbf')
+        .then(res => res.buffer())
+        .then(buffer => {
           if (config.persistDownloadedTiles) {
             this._persistTile(z, x, y, buffer);
             return buffer;
           }
         });
     }
-    return promise.then((buffer) => {
+    return promise.then(buffer => {
       return this._createTile(z, x, y, buffer);
     });
   }
@@ -136,8 +139,8 @@ class TileSource {
   _createTile(z, x, y, buffer) {
     const name = [z, x, y].join('-');
     this.cached.push(name);
-    
-    const tile = this.cache[name] = new Tile(this.styler);
+
+    const tile = (this.cache[name] = new Tile(this.styler));
     return tile.load(buffer);
   }
 
@@ -158,7 +161,9 @@ class TileSource {
 
   _getPersited(z, x, y) {
     try {
-      return fs.readFileSync(path.join(paths.cache, z.toString(), `${x}-${y}.pbf`));
+      return fs.readFileSync(
+        path.join(paths.cache, z.toString(), `${x}-${y}.pbf`),
+      );
     } catch (error) {
       return false;
     }
