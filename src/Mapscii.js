@@ -12,7 +12,7 @@ import TermMouse from 'term-mouse';
 import Renderer from './Renderer.js';
 import TileSource from './TileSource.js';
 import utils from './utils.ts';
-import config from './config.js';
+import config from './config.ts';
 
 class Mapscii {
   constructor(options) {

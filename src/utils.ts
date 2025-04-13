@@ -5,7 +5,7 @@
   methods used all around
 */
 'use strict';
-import config from './config.js';
+import config from './config.ts';
 
 /**
  * Geographic and mathematical constants used in map calculations

@@ -13,7 +13,7 @@
 */
 'use strict';
 import stringWidth from 'string-width';
-import config from './config.js';
+import config from './config.ts';
 import utils from './utils.ts';
 
 const asciiMap = {

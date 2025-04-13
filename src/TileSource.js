@@ -13,7 +13,7 @@ import envPaths from 'env-paths';
 const paths = envPaths('mapscii');
 
 import Tile from './Tile.js';
-import config from './config.js';
+import config from './config.ts';
 
 // https://github.com/mapbox/node-mbtiles has native build dependencies (sqlite3)
 // To maximize MapSCII's compatibility, MBTiles support must be manually added via

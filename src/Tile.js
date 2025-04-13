@@ -11,7 +11,7 @@ import zlib from 'zlib';
 import RBush from 'rbush';
 import x256 from 'x256';
 
-import config from './config.js';
+import config from './config.ts';
 import utils from './utils.ts';
 
 class Tile {

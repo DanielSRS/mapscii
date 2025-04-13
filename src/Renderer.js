@@ -12,7 +12,7 @@ import Canvas from './Canvas.js';
 import LabelBuffer from './LabelBuffer.js';
 import Styler from './Styler.js';
 import utils from './utils.ts';
-import config from './config.js';
+import config from './config.ts';
 
 class Renderer {
   constructor(output, tileSource, style) {

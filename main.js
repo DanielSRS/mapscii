@@ -8,7 +8,7 @@
   TODO: params parsing and so on
 #*/
 'use strict';
-import config from './src/config.js';
+import config from './src/config.ts';
 import Mapscii from './src/Mapscii.js';
 import yargs from 'yargs';
 
