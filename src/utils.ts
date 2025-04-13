@@ -12,7 +12,7 @@ const constants = {
 };
 
 const utils = {
-  clamp: (num, min, max) => {
+  clamp: (num: number, min: number, max: number) => {
     if (num <= min) {
       return min;
     } else if (num >= max) {
@@ -22,20 +22,20 @@ const utils = {
     }
   },
 
-  baseZoom: zoom => {
+  baseZoom: (zoom: number) => {
     return Math.min(config.tileRange, Math.max(0, Math.floor(zoom)));
   },
 
-  tilesizeAtZoom: zoom => {
+  tilesizeAtZoom: (zoom: number) => {
     return config.projectSize * Math.pow(2, zoom - utils.baseZoom(zoom));
   },
 
-  deg2rad: angle => {
+  deg2rad: (angle: number) => {
     // (angle / 180) * Math.PI
     return angle * 0.017453292519943295;
   },
 
-  ll2tile: (lon, lat, zoom) => {
+  ll2tile: (lon: number, lat: number, zoom: number) => {
     return {
       x: ((lon + 180) / 360) * Math.pow(2, zoom),
       y:
@@ -51,7 +51,7 @@ const utils = {
     };
   },
 
-  tile2ll: (x, y, zoom) => {
+  tile2ll: (x: number, y: number, zoom: number): LonLat => {
     const n = Math.PI - (2 * Math.PI * y) / Math.pow(2, zoom);
 
     return {
@@ -60,14 +60,14 @@ const utils = {
     };
   },
 
-  metersPerPixel: (zoom, lat = 0) => {
+  metersPerPixel: (zoom: number, lat: number = 0) => {
     return (
       (Math.cos((lat * Math.PI) / 180) * 2 * Math.PI * constants.RADIUS) /
       (256 * Math.pow(2, zoom))
     );
   },
 
-  hex2rgb: color => {
+  hex2rgb: (color: string) => {
     if (typeof color !== 'string') return [255, 0, 0];
 
     if (!/^#[a-fA-F0-9]{3,6}$/.test(color)) {
@@ -87,11 +87,11 @@ const utils = {
     }
   },
 
-  digits: (number, digits) => {
+  digits: (number: number, digits: number): number => {
     return Math.floor(number * Math.pow(10, digits)) / Math.pow(10, digits);
   },
 
-  normalize: ll => {
+  normalize: (ll: LonLat): LonLat => {
     if (ll.lon < -180) ll.lon += 360;
     if (ll.lon > 180) ll.lon -= 360;
 
@@ -101,7 +101,7 @@ const utils = {
     return ll;
   },
 
-  population: val => {
+  population: (val: number): number => {
     let bits = 0;
     while (val > 0) {
       bits += val & 1;
@@ -112,3 +112,8 @@ const utils = {
 };
 
 export default utils;
+
+interface LonLat {
+  lon: number;
+  lat: number;
+}
