@@ -9,7 +9,6 @@
 'use strict';
 import fs from 'fs';
 import path from 'path';
-import fetch from 'node-fetch';
 import envPaths from 'env-paths';
 const paths = envPaths('mapscii');
 
@@ -113,11 +112,12 @@ class TileSource {
       promise = Promise.resolve(persistedTile);
     } else {
       promise = fetch(this.source + [z, x, y].join('/') + '.pbf')
-        .then(res => res.buffer())
+        .then(res => res.arrayBuffer())
         .then(buffer => {
+          const bufferObj = Buffer.from(buffer);
           if (config.persistDownloadedTiles) {
-            this._persistTile(z, x, y, buffer);
-            return buffer;
+            this._persistTile(z, x, y, bufferObj);
+            return bufferObj;
           }
         });
     }

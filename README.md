@@ -24,6 +24,10 @@ If you're on Windows, use the open source telnet client [PuTTY](https://www.chia
 * Highly optimized algorithms for a smooth experience
 * 100% pure JavaScript! :sunglasses:
 
+## Requirements
+
+- Node.js v18.0.0 or higher (for built-in fetch support)
+
 ## How to run it locally
 
 With a modern node installation available, just start it with
