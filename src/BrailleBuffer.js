@@ -14,7 +14,7 @@
 'use strict';
 import stringWidth from 'string-width';
 import config from './config.js';
-import utils from './utils.js';
+import utils from './utils.ts';
 
 const asciiMap = {
   // '▬': [2+32, 4+64],

@@ -1,5 +1,5 @@
 'use strict';
-import utils from './utils.js';
+import utils from './utils.ts';
 
 describe('utils', () => {
   describe('hex2rgb', () => {

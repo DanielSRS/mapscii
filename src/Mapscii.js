@@ -11,7 +11,7 @@ import TermMouse from 'term-mouse';
 
 import Renderer from './Renderer.js';
 import TileSource from './TileSource.js';
-import utils from './utils.js';
+import utils from './utils.ts';
 import config from './config.js';
 
 class Mapscii {

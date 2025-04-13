@@ -12,7 +12,7 @@ import RBush from 'rbush';
 import x256 from 'x256';
 
 import config from './config.js';
-import utils from './utils.js';
+import utils from './utils.ts';
 
 class Tile {
   constructor(styler) {
