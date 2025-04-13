@@ -1,5 +1,5 @@
 'use strict';
-const utils = require('./utils');
+import utils from './utils.js';
 
 describe('utils', () => {
   describe('hex2rgb', () => {

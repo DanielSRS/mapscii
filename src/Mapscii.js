@@ -5,14 +5,14 @@
   UI and central command center
 */
 'use strict';
-const fs = require('fs');
-const keypress = require('keypress');
-const TermMouse = require('term-mouse');
+import fs from 'fs';
+import keypress from 'keypress';
+import TermMouse from 'term-mouse';
 
-const Renderer = require('./Renderer');
-const TileSource = require('./TileSource');
-const utils = require('./utils');
-let config = require('./config');
+import Renderer from './Renderer.js';
+import TileSource from './TileSource.js';
+import utils from './utils.js';
+import config from './config.js';
 
 class Mapscii {
   constructor(options) {
@@ -32,7 +32,7 @@ class Mapscii {
 
     this.zoom = 0;
     this.minZoom = null;
-    config = Object.assign(config, options);
+    Object.assign(config, options);
 
     this.center = {
       lat: config.initialLat,
@@ -352,4 +352,4 @@ class Mapscii {
   }
 }
 
-module.exports = Mapscii;
+export default Mapscii;

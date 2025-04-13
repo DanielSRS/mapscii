@@ -5,7 +5,7 @@
   methods used all around
 */
 'use strict';
-const config = require('./config');
+import config from './config.js';
 
 const constants = {
   RADIUS: 6378137,
@@ -111,4 +111,4 @@ const utils = {
   },
 };
 
-module.exports = utils;
+export default utils;

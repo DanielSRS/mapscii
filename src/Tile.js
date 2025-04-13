@@ -5,14 +5,14 @@
   Handling of and access to single VectorTiles
 */
 'use strict';
-const VectorTile = require('@mapbox/vector-tile').VectorTile;
-const Protobuf = require('pbf');
-const zlib = require('zlib');
-const RBush = require('rbush');
-const x256 = require('x256');
+import { VectorTile } from '@mapbox/vector-tile';
+import Protobuf from 'pbf';
+import zlib from 'zlib';
+import RBush from 'rbush';
+import x256 from 'x256';
 
-const config = require('./config');
-const utils = require('./utils');
+import config from './config.js';
+import utils from './utils.js';
 
 class Tile {
   constructor(styler) {
@@ -183,4 +183,4 @@ class Tile {
 
 Tile.prototype.layers = {};
 
-module.exports = Tile;
+export default Tile;

@@ -12,9 +12,9 @@
   Will either be merged into node-drawille or become an own module at some point
 */
 'use strict';
-const stringWidth = require('string-width');
-const config = require('./config');
-const utils = require('./utils');
+import stringWidth from 'string-width';
+import config from './config.js';
+import utils from './utils.js';
 
 const asciiMap = {
   // '▬': [2+32, 4+64],
@@ -218,4 +218,4 @@ class BrailleBuffer {
   }
 }
 
-module.exports = BrailleBuffer;
+export default BrailleBuffer;

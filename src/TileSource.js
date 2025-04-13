@@ -7,21 +7,21 @@
   * local MBTiles and VectorTiles
 */
 'use strict';
-const fs = require('fs');
-const path = require('path');
-const fetch = require('node-fetch');
-const envPaths = require('env-paths');
+import fs from 'fs';
+import path from 'path';
+import fetch from 'node-fetch';
+import envPaths from 'env-paths';
 const paths = envPaths('mapscii');
 
-const Tile = require('./Tile');
-const config = require('./config');
+import Tile from './Tile.js';
+import config from './config.js';
 
 // https://github.com/mapbox/node-mbtiles has native build dependencies (sqlite3)
-// To maximize MapSCII’s compatibility, MBTiles support must be manually added via
+// To maximize MapSCII's compatibility, MBTiles support must be manually added via
 // $> npm install -g @mapbox/mbtiles
 let MBTiles = null;
 try {
-  MBTiles = require('@mapbox/mbtiles');
+  MBTiles = (await import('@mapbox/mbtiles')).default;
 } catch (err) {
   void 0;
 }
@@ -50,6 +50,7 @@ class TileSource {
       }
 
       this.mode = modes.HTTP;
+      return Promise.resolve();
     } else if (this.source.endsWith('.mbtiles')) {
       if (!MBTiles) {
         throw new Error(
@@ -58,7 +59,7 @@ class TileSource {
       }
 
       this.mode = modes.MBTiles;
-      this.loadMBTiles(source);
+      return this.loadMBTiles(source);
     } else {
       throw new Error("source type isn't supported yet");
     }
@@ -180,4 +181,4 @@ class TileSource {
   }
 }
 
-module.exports = TileSource;
+export default TileSource;

@@ -11,9 +11,9 @@
   Will most likely be turned into a stand alone module at some point
  */
 'use strict';
-const bresenham = require('bresenham');
-const earcut = require('earcut');
-const BrailleBuffer = require('./BrailleBuffer');
+import bresenham from 'bresenham';
+import earcut from 'earcut';
+import BrailleBuffer from './BrailleBuffer.js';
 
 class Canvas {
   constructor(width, height) {
@@ -203,4 +203,4 @@ class Canvas {
 
 Canvas.prototype.stack = [];
 
-module.exports = Canvas;
+export default Canvas;

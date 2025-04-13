@@ -8,9 +8,11 @@
   TODO: params parsing and so on
 #*/
 'use strict';
-const config = require('./src/config');
-const Mapscii = require('./src/Mapscii');
-const argv = require('yargs')
+import config from './src/config.js';
+import Mapscii from './src/Mapscii.js';
+import yargs from 'yargs';
+
+const argv = yargs
   .option('latitude', {
     alias: 'lat',
     description: 'Latitude of initial centre',
