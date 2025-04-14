@@ -1,5 +1,5 @@
 'use strict';
-import TileSource from './TileSource.js';
+import TileSource from './TileSource.ts';
 
 describe('TileSource', () => {
   describe('with a HTTP source', () => {

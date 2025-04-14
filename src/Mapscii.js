@@ -10,7 +10,7 @@ import keypress from 'keypress';
 import TermMouse from 'term-mouse';
 
 import Renderer from './Renderer.js';
-import TileSource from './TileSource.js';
+import TileSource from './TileSource.ts';
 import utils from './utils.ts';
 import config from './config.ts';
 
