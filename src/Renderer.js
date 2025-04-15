@@ -10,7 +10,7 @@ import simplify from 'simplify-js';
 
 import Canvas from './Canvas.js';
 import LabelBuffer from './LabelBuffer.ts';
-import Styler from './Styler.js';
+import Styler from './Styler.ts';
 import utils from './utils.ts';
 import config from './config.ts';
 
