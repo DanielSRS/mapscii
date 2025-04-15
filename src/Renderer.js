@@ -9,7 +9,7 @@ import x256 from 'x256';
 import simplify from 'simplify-js';
 
 import Canvas from './Canvas.js';
-import LabelBuffer from './LabelBuffer.js';
+import LabelBuffer from './LabelBuffer.ts';
 import Styler from './Styler.js';
 import utils from './utils.ts';
 import config from './config.ts';
